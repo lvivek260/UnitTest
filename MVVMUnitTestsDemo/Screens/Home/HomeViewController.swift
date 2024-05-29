@@ -16,5 +16,11 @@ class HomeViewController: UIViewController {
     }
     
 
-
+    @IBAction func didBackBtnClick(_ sender: UIButton) {
+        if let window = getWindow(){
+            window.rootViewController = AppStoryboard.login.getViewController(LoginNavigationController.self)
+            window.makeKeyAndVisible()
+        }
+    }
+    
 }
