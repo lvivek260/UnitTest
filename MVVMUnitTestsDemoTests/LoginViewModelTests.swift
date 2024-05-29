@@ -41,12 +41,12 @@ final class LoginViewModelTests: XCTestCase {
         let result5 = viewModel.validateEmailPassword(loginModel: loginModel5).isSuccess
         let result6 = viewModel.validateEmailPassword(loginModel: loginModel6).isSuccess
         
-        XCTAssertEqual(result1, false)
-        XCTAssertEqual(result2, false)
-        XCTAssertEqual(result3, false)
-        XCTAssertEqual(result4, false)
-        XCTAssertEqual(result5, false)
-        XCTAssertEqual(result6, false)
+        XCTAssertFalse(result1)
+        XCTAssertFalse(result2)
+        XCTAssertFalse(result3)
+        XCTAssertFalse(result4)
+        XCTAssertFalse(result5)
+        XCTAssertFalse(result6)
     }
     
     
@@ -70,12 +70,12 @@ final class LoginViewModelTests: XCTestCase {
         let result5 = viewModel.validateEmailPassword(loginModel: loginModel5).isSuccess
         let result6 = viewModel.validateEmailPassword(loginModel: loginModel6).isSuccess
         
-        XCTAssertEqual(result1, false)
-        XCTAssertEqual(result2, false)
-        XCTAssertEqual(result3, false)
-        XCTAssertEqual(result4, false)
-        XCTAssertEqual(result5, false)
-        XCTAssertEqual(result6, false)
+        XCTAssertFalse(result1)
+        XCTAssertFalse(result2)
+        XCTAssertFalse(result3)
+        XCTAssertFalse(result4)
+        XCTAssertFalse(result5)
+        XCTAssertFalse(result6)
     }
     
 //MARK: - Valid Test Cases
@@ -93,9 +93,9 @@ final class LoginViewModelTests: XCTestCase {
         let result2 = viewModel.validateEmailPassword(loginModel: loginModel2).isSuccess
         let result3 = viewModel.validateEmailPassword(loginModel: loginModel3).isSuccess
      
-        XCTAssertEqual(result1, true)
-        XCTAssertEqual(result2, true)
-        XCTAssertEqual(result3, true)
+        XCTAssertTrue(result1)
+        XCTAssertTrue(result2)
+        XCTAssertTrue(result3)
     }
     
     func testValidPassword(){
@@ -112,9 +112,9 @@ final class LoginViewModelTests: XCTestCase {
        let result2 = viewModel.validateEmailPassword(loginModel: loginModel2).isSuccess
        let result3 = viewModel.validateEmailPassword(loginModel: loginModel3).isSuccess
     
-       XCTAssertEqual(result1, true)
-       XCTAssertEqual(result2, true)
-       XCTAssertEqual(result3, true)
+        XCTAssertTrue(result1)
+        XCTAssertTrue(result2)
+        XCTAssertTrue(result3)
    }
 }
     
