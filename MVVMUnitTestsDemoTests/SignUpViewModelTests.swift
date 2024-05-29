@@ -9,130 +9,74 @@ import XCTest
 @testable import MVVMUnitTestsDemo
 
 final class SignUpViewModelTests: XCTestCase {
-    
-    var viewModel: SignUpViewModel?
+    var viewModel: SignUpViewModel!
 
-//MARK: - Default Methods
-    override func setUpWithError() throws {
-        viewModel = SignUpViewModel()
-    }
-
-    override func tearDownWithError() throws {
-        viewModel = nil
+    override func setUp() {
+        super.setUp()
+        viewModel = SignUpViewModel() // Dependency injection
     }
 
-//MARK: - Invalid Test Cases
-    func testInvalidFirstName(){
-        guard let viewModel else {
-            XCTFail("ViewModel Cannot be nil")
-            return
-        }
-        let model1 = SignUpModel(firstName: nil, lastName: "XYZ", email: "vivek@gmail.com", password: "Vivek@123")
-        let model2 = SignUpModel(firstName: "", lastName: "XYZ", email: "vivek@gmail.com", password: "Vivek@123")
-        
-        let result1 = viewModel.validationCheck(signUpModel: model1).isSuccess
-        let result2 = viewModel.validationCheck(signUpModel: model2).isSuccess
-        
-        XCTAssertEqual(result1, false)
-        XCTAssertEqual(result2, false)
-    }
-    
-    
-    func testInvalidLastName(){
-        guard let viewModel else {
-            XCTFail("ViewModel Cannot be nil")
-            return
-        }
-        let model1 = SignUpModel(firstName: "Vivek", lastName: nil, email: "vivek@gmail.com", password: "Vivek@123")
-        let model2 = SignUpModel(firstName: "Vivek", lastName: "", email: "vivek@gmail.com", password: "Vivek@123")
-        
-        let result1 = viewModel.validationCheck(signUpModel: model1).isSuccess
-        let result2 = viewModel.validationCheck(signUpModel: model2).isSuccess
-        
-        XCTAssertEqual(result1, false)
-        XCTAssertEqual(result2, false)
-    }
-    
-    
-    func testInvalidEmail(){
-        guard let viewModel else {
-            XCTFail("ViewModel Cannot be nil")
-            return
-        }
-        let model1 = SignUpModel(firstName: "Vivek", lastName: "Lokhande", email: nil, password: "Vivek@123")
-        let model2 = SignUpModel(firstName: "Vivek", lastName: "Lokhande", email: "", password: "Vivek@123")
-        let model3 = SignUpModel(firstName: "Vivek", lastName: "Lokhande", email: "vievk", password: "Vivek@123")
-        let model4 = SignUpModel(firstName: "Vivek", lastName: "Lokhande", email: "vivek@123", password: "Vivek@123")
-        let model5 = SignUpModel(firstName: "Vivek", lastName: "Lokhande", email: "vivek.com", password: "Vivek@123")
-        let model6 = SignUpModel(firstName: "Vivek", lastName: "Lokhande", email: "vivek.com@123", password: "Vivek@123")
+    func testValidationCheck_Success() {
+        // Arrange
+        let signUpModel = SignUpModel(firstName: "John", lastName: "Doe", email: "john.doe@example.com", password: "Password1!")
 
-        let result1 = viewModel.validationCheck(signUpModel: model1).isSuccess
-        let result2 = viewModel.validationCheck(signUpModel: model2).isSuccess
-        let result3 = viewModel.validationCheck(signUpModel: model3).isSuccess
-        let result4 = viewModel.validationCheck(signUpModel: model4).isSuccess
-        let result5 = viewModel.validationCheck(signUpModel: model5).isSuccess
-        let result6 = viewModel.validationCheck(signUpModel: model6).isSuccess
-        
-        XCTAssertEqual(result1, false)
-        XCTAssertEqual(result2, false)
-        XCTAssertEqual(result3, false)
-        XCTAssertEqual(result4, false)
-        XCTAssertEqual(result5, false)
-        XCTAssertEqual(result6, false)
-    }
-    
-    
-    func testInvalidPassword(){
-        guard let viewModel else {
-            XCTFail("ViewModel Cannot be nil")
-            return
-        }
-        let model1 = SignUpModel(firstName: "Vivek", lastName: "Lokhande", email: "vivek@gmail.com", password: nil)
-        let model2 = SignUpModel(firstName: "Vivek", lastName: "Lokhande", email: "vivek@gmail.com", password: "")
-        let model3 = SignUpModel(firstName: "Vivek", lastName: "Lokhande", email: "vivek@gmail.com", password: "vivek123")
-        let model4 = SignUpModel(firstName: "Vivek", lastName: "Lokhande", email: "vivek@gmail.com", password: "12345678")
-        let model5 = SignUpModel(firstName: "Vivek", lastName: "Lokhande", email: "vivek@gmail.com", password: "vivek")
-        let model6 = SignUpModel(firstName: "Vivek", lastName: "Lokhande", email: "vivek@gmail.com", password: "Vi@123")
-       
-        let result1 = viewModel.validationCheck(signUpModel: model1).isSuccess
-        let result2 = viewModel.validationCheck(signUpModel: model2).isSuccess
-        let result3 = viewModel.validationCheck(signUpModel: model3).isSuccess
-        let result4 = viewModel.validationCheck(signUpModel: model4).isSuccess
-        let result5 = viewModel.validationCheck(signUpModel: model5).isSuccess
-        let result6 = viewModel.validationCheck(signUpModel: model6).isSuccess
-        
-        XCTAssertEqual(result1, false)
-        XCTAssertEqual(result2, false)
-        XCTAssertEqual(result3, false)
-        XCTAssertEqual(result4, false)
-        XCTAssertEqual(result5, false)
-        XCTAssertEqual(result6, false)
-    }
-    
-    //MARK: - Valid Test Cases
-    func testValidFirstName(){
-        checkAllValid()
+        // Act
+        let result = viewModel.validationCheck(signUpModel: signUpModel)
+
+        // Assert
+        XCTAssertTrue(result.isSuccess)
+        XCTAssertNil(result.error)
     }
 
-    func testValidLastName(){
-        checkAllValid()
+    func testValidationCheck_FirstNameFailure() {
+        // Arrange
+        let signUpModel = SignUpModel(firstName: "", lastName: "Doe", email: "john.doe@example.com", password: "Password1!")
+
+        // Act
+        let result = viewModel.validationCheck(signUpModel: signUpModel)
+
+        // Assert
+        XCTAssertFalse(result.isSuccess)
+        XCTAssertEqual(result.error, "Please enter first name")
     }
-    
-    func testValidEmail(){
-        checkAllValid()
+
+    func testValidationCheck_LastNameFailure() {
+        // Arrange
+        let signUpModel = SignUpModel(firstName: "John", lastName: "", email: "john.doe@example.com", password: "Password1!")
+
+        // Act
+        let result = viewModel.validationCheck(signUpModel: signUpModel)
+
+        // Assert
+        XCTAssertFalse(result.isSuccess)
+        XCTAssertEqual(result.error, "Please enter last name")
     }
-    
-    func testValidPassword(){
-        checkAllValid()
+
+    func testValidationCheck_EmailFailure() {
+        // Arrange
+        let signUpModel1 = SignUpModel(firstName: "John", lastName: "Doe", email: "invalid-email", password: "Password1!")
+        let signUpModel2 = SignUpModel(firstName: "John", lastName: "Doe", email: nil, password: "Password1!")
+
+        // Act
+        let result1 = viewModel.validationCheck(signUpModel: signUpModel1)
+        let result2 = viewModel.validationCheck(signUpModel: signUpModel2)
+
+        // Assert
+        XCTAssertFalse(result1.isSuccess)
+        XCTAssertEqual(result1.error, "Email id should be valid")
+        XCTAssertFalse(result2.isSuccess)
+        XCTAssertEqual(result2.error, "Email id cannot be empty")
     }
-    
-    private func checkAllValid(){
-        guard let viewModel else {
-            XCTFail("ViewModel Cannot be nil")
-            return
-        }
-        let model1 = SignUpModel(firstName: "Vivek", lastName: "Lokhande", email: "vivek@gmail.com", password: "Vivek@123")
-        let result1 = viewModel.validationCheck(signUpModel: model1).isSuccess
-        XCTAssertEqual(result1, true)
+
+    func testValidationCheck_PasswordFailure() {
+        // Arrange
+        let signUpModel = SignUpModel(firstName: "John", lastName: "Doe", email: "john.doe@example.com", password: "weak")
+
+        // Act
+        let result = viewModel.validationCheck(signUpModel: signUpModel)
+
+        // Assert
+        XCTAssertFalse(result.isSuccess)
+        XCTAssertEqual(result.error, "At least minimum 8 characters at least 1 Alphabet, 1 Number and 1 Special Character")
     }
 }

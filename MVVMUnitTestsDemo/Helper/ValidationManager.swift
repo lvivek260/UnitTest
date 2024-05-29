@@ -12,7 +12,7 @@ struct ValidationResult{
     let isSuccess: Bool
 }
 
-final class ValidationManager{
+ class ValidationManager{
     
      func email(_ value:String?) -> ValidationResult{
         let email = (value ?? "").trimmingCharacters(in: .whitespaces)
